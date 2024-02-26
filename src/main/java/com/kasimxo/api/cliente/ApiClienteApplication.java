@@ -33,9 +33,12 @@ public class ApiClienteApplication {
 	public static Input i;
 	
 	public static MainWindow mw;
+	
+	public static List<String> imagenes; //Temporal, guarda los nombres de las imágenes recuperadas del servidor
 
 	public static void main(String[] args) {
 		
+		imagenes = getAllImagenes();
 		
 		MainWindow.launch(MainWindow.class);
 		
@@ -59,7 +62,7 @@ public class ApiClienteApplication {
 		switch (Input.leerInt()) {
 		case 1:
 			//Subir imagen
-			postImagen();
+			//postImagen();
 			break;
 		case 2:
 			//Descargar imagen
@@ -67,7 +70,7 @@ public class ApiClienteApplication {
 			break;
 		case 3:
 			//Directorio imágenes
-			getAllImagenes();
+			imagenes = getAllImagenes();
 			break;
 		case 4:
 			funcionando = false;
@@ -81,7 +84,7 @@ public class ApiClienteApplication {
 	}
 	
 	
-	public static void getAllImagenes() {
+	public static List<String> getAllImagenes() {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			
@@ -93,14 +96,14 @@ public class ApiClienteApplication {
 			
 			for(String s : response) {System.out.println(s);}
 			System.out.println();
-			//System.out.println(response.getStatusLine());
+			return response;
 		} catch (Exception e) {
 			e.printStackTrace();
-			
+			return null;
 		}
 	}
 	
-	public static void postImagen() {
+	public static void postImagen(File imagen) {
 		try {
 
 			URL url = new URL("http://localhost:8081/upload");
@@ -109,16 +112,15 @@ public class ApiClienteApplication {
 			con.setConnectTimeout(5000);
 			con.setReadTimeout(5000);
 			
-			File transfer = new File("./imagenes/1.png");
 		
-			System.out.println(transfer.getName());
+			System.out.println(imagen.getName());
 			
-			byte[] byteArray = Files.readAllBytes(Paths.get(transfer.getAbsolutePath()));
+			byte[] byteArray = Files.readAllBytes(Paths.get(imagen.getAbsolutePath()));
 			String encoded = Base64.getUrlEncoder().encodeToString(byteArray);
 			
 			Map<String, String> parameters = new HashMap<>();
 			parameters.put("file", encoded);
-			parameters.put("fileName", transfer.getName());
+			parameters.put("fileName", imagen.getName());
 			
 			con.setDoOutput(true);
 			DataOutputStream out = new DataOutputStream(con.getOutputStream());
