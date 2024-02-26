@@ -6,10 +6,13 @@ import java.io.File;
 import java.util.List;
 
 import com.kasimxo.api.cliente.ApiClienteApplication;
+import com.kasimxo.api.cliente.views.controller.Controller;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,10 +29,11 @@ import javafx.scene.control.Button;
 
 public class MainWindow extends Application {
 
-
+	public static Stage stage;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		stage = primaryStage;
 		System.out.println("Ejecutando inicialización ventana");
 		
 		try {
@@ -60,6 +64,17 @@ public class MainWindow extends Application {
 		    	btn_descargar.setFont(new Font("Arial", 12));
 		    	btn_descargar.setTextFill(Color.web("#0076a3"));
 		    	btn_descargar.setTextAlignment(TextAlignment.JUSTIFY); 
+		    	btn_descargar.setOnAction(new EventHandler<ActionEvent>() {
+
+		    		//Accion que realiza el botón cuando le hacen clic
+					@Override
+					public void handle(ActionEvent event) {
+						System.out.println("A descargar el archivo " + nombre.getText());
+						ApiClienteApplication.getImagen(nombre.getText());
+						
+					}
+		    		
+		    	});
 		    	linea.getChildren().add(btn_descargar);
 
 		    	

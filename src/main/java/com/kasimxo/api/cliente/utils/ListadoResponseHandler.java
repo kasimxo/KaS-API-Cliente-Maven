@@ -1,4 +1,4 @@
-package com.kasimxo.api.cliente;
+package com.kasimxo.api.cliente.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +18,7 @@ import org.apache.http.client.ResponseHandler;
  * @author andres
  *
  */
-public class MyResponseHandler implements ResponseHandler{
+public class ListadoResponseHandler implements ResponseHandler{
 
 	@Override
 	public List<String> handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
@@ -26,6 +26,8 @@ public class MyResponseHandler implements ResponseHandler{
 		InputStream in = response.getEntity().getContent();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String line;
+		System.out.println(response);
+		System.out.println(response.getEntity());
 		while ((line=br.readLine()) != null) {
 			
 			List<String> a = new ArrayList<String>(Arrays.asList(line.split(",")));
@@ -34,6 +36,7 @@ public class MyResponseHandler implements ResponseHandler{
 				s = s.replace("[", "");
 				s = s.replace("]", "");
 				respuesta.add(s);
+				System.out.println(s);
 			});
 			//respuesta.add(line);
 		}

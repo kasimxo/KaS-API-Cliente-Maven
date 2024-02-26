@@ -5,7 +5,7 @@
 <?import com.kasimxo.api.cliente.views.*?>
 <VBox alignment="CENTER" prefWidth="600" prefHeight="400" spacing="20.0" styleClass="container" stylesheets="@../css/mainwindow.css"
       xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" 
-      fx:controller="com.kasimxo.api.cliente.views.controller.Cotroller">
+      fx:controller="com.kasimxo.api.cliente.views.controller.Controller">
    <Label styleClass="app-title" text="Clouding"/>
    <Button text="Subir Imagen" onAction="#seleccionarArchivo"/>
    <ListView fx:id="lista" prefWidth="100" prefHeight="200"/>

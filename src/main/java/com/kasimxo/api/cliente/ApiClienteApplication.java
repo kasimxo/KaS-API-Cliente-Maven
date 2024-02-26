@@ -2,6 +2,7 @@ package com.kasimxo.api.cliente;
 
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
@@ -17,6 +18,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.kasimxo.api.cliente.utils.Input;
+import com.kasimxo.api.cliente.utils.ListadoResponseHandler;
+import com.kasimxo.api.cliente.utils.Base64ResponseHandler;
 import com.kasimxo.api.cliente.utils.ParameterStringBuilder;
 import com.kasimxo.api.cliente.views.MainWindow;
 
@@ -24,6 +27,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 @SpringBootApplication
@@ -44,45 +48,9 @@ public class ApiClienteApplication {
 		MainWindow.launch(MainWindow.class);
 		
 		funcionando = true;
-		i = new Input();
-		while (funcionando) {
-			menu();
-		}
-	}
-	
-	public static void menu() {
-		String[] opciones = {
-				"1. Subir imagen",
-				"2. Descargar imagen",
-				"3. Directorio de imágenes",
-				"4. Salir"
-				};
-		
-		for (String s : opciones) { System.out.println(s);}
-		
-		switch (Input.leerInt()) {
-		case 1:
-			//Subir imagen
-			//postImagen();
-			break;
-		case 2:
-			//Descargar imagen
-			getImagen();
-			break;
-		case 3:
-			//Directorio imágenes
-			imagenes = getAllImagenes();
-			break;
-		case 4:
-			funcionando = false;
-			break;
-		default:
-			System.out.println("Opción no reconocida");
-			break;
-		
-		}
 
 	}
+
 	
 	
 	public static List<String> getAllImagenes() {
@@ -92,7 +60,7 @@ public class ApiClienteApplication {
 			HttpGet request = new HttpGet("http://localhost:8081/imagenes");
 			
 			//CloseableHttpResponse response = httpClient.execute(request);
-			ResponseHandler<List<String>> responseHandler = new MyResponseHandler(); 
+			ResponseHandler<List<String>> responseHandler = new ListadoResponseHandler(); 
 			List<String> response = httpClient.execute(request, responseHandler);
 			
 			for(String s : response) {System.out.println(s);}
@@ -137,9 +105,42 @@ public class ApiClienteApplication {
 		}
 	}
 	
-	public static void getImagen() {
+	public static void getImagen(String filename) {
 		try {
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			
+			HttpGet request = new HttpGet("http://localhost:8081/imagenes/" + filename);
+			
+			ResponseHandler<String> responseHandler = new Base64ResponseHandler(); 
+			
+			String rawBase64Response = httpClient.execute(request, responseHandler);
+			
+			byte[] decodedBytes = Base64.getUrlDecoder().decode(rawBase64Response);
+		 	System.out.println(decodedBytes.length);
+		 	//File f = new File("./src/main/resources/imagenes/"+fileName);
+		 	
+		 	DirectoryChooser chooser = new DirectoryChooser();
+		 	chooser.setTitle("Selecciona el directorio en el que guardar el archivo \"" + filename + "\"");
 
+
+		 	File selectedDirectory = chooser.showDialog(MainWindow.stage);
+		 	
+		 	File finalFile = new File(selectedDirectory.getAbsolutePath()+"/"+filename);
+			
+	 		finalFile.createNewFile();
+	 		System.out.println("Vamos a iniciar fos");
+	 		
+		 	FileOutputStream fos = new FileOutputStream(finalFile);
+		 	
+		 	System.out.println("Hemos iniciado fos");
+		 	fos.write(decodedBytes);
+		 	fos.flush();
+		 	fos.close();
+
+		 	System.out.println("Hemos guardado el archivo");
+
+		 	
+			return;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -8,7 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
-public class Cotroller {
+public class Controller {
 
 	@FXML
 	public void seleccionarArchivo(ActionEvent event) {
@@ -26,6 +26,6 @@ public class Cotroller {
 			ApiClienteApplication.postImagen(selected);
 		}
 	}
-	
+
 	
 }
