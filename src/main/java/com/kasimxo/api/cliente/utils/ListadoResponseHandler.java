@@ -23,6 +23,13 @@ public class ListadoResponseHandler implements ResponseHandler{
 	@Override
 	public List<String> handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
 		List<String> respuesta = new ArrayList<String>();
+
+		int status = response.getStatusLine().getStatusCode();
+		if (status < 200 || status >= 300) {
+			System.out.println("Problema con la respuesta");
+			return null;
+		}
+		
 		InputStream in = response.getEntity().getContent();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String line;

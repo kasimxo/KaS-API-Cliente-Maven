@@ -12,6 +12,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
+import org.springframework.http.HttpStatus;
 
 /**
  * Interpreta respuestas del servidor que son puro String en base 64
@@ -22,6 +23,13 @@ public class Base64ResponseHandler implements ResponseHandler {
 	@Override
 	public String handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
 		String respuesta = "";
+		
+		int status = response.getStatusLine().getStatusCode();
+		if (status < 200 || status >= 300) {
+			System.out.println("Problema con la respuesta");
+			return null;
+		}
+		
 		InputStream in = response.getEntity().getContent();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String line;
