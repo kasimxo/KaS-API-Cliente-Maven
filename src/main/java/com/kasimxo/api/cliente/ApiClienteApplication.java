@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +21,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.kasimxo.api.cliente.utils.Input;
 import com.kasimxo.api.cliente.utils.ListadoResponseHandler;
 import com.kasimxo.api.cliente.utils.Base64ResponseHandler;
+import com.kasimxo.api.cliente.utils.ErrorCodeHandler;
 import com.kasimxo.api.cliente.utils.ParameterStringBuilder;
 import com.kasimxo.api.cliente.views.MainWindow;
 
@@ -51,6 +53,23 @@ public class ApiClienteApplication {
 
 	}
 
+	public static void deleteImagen(String filename) {
+		try {
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			HttpDelete request = new HttpDelete("http://localhost:8081/imagenes/" + filename);
+			
+			ResponseHandler<String> responseHandler = new ErrorCodeHandler(); 
+			String e = httpClient.execute(request, responseHandler);
+			System.out.println(e);
+		
+		 	System.out.println("Hemos eliminado el archivo");
+
+		 	
+			return;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	public static List<String> getAllImagenes() {

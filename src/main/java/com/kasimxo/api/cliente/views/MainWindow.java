@@ -82,6 +82,15 @@ public class MainWindow extends Application {
 		    	btn_eliminar.setFont(new Font("Arial", 12));
 		    	btn_eliminar.setTextFill(Color.web("#0076a3"));
 		    	btn_eliminar.setTextAlignment(TextAlignment.JUSTIFY); 
+		    	btn_eliminar.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						ApiClienteApplication.deleteImagen(nombre.getText());
+						
+					}
+		    		
+		    	});
 		    	linea.getChildren().add(btn_eliminar);
 		    	
 		    	
