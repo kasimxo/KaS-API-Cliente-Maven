@@ -39,6 +39,7 @@ public class ApiClienteApplication {
 	public static void main(String[] args) {
 		
 		imagenes = getAllImagenes();
+		System.out.println(imagenes.size());
 		
 		MainWindow.launch(MainWindow.class);
 		
@@ -95,7 +96,6 @@ public class ApiClienteApplication {
 			List<String> response = httpClient.execute(request, responseHandler);
 			
 			for(String s : response) {System.out.println(s);}
-			System.out.println();
 			return response;
 		} catch (Exception e) {
 			e.printStackTrace();

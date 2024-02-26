@@ -7,7 +7,6 @@
       xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="com.kasimxo.api.cliente.views.controller.Cotroller">
    <Label styleClass="app-title" text="Clouding"/>
-   <TextField maxWidth="200.0" promptText="Enter your name"/>
-   <Button text="Seleccionar Archivo" onAction="#seleccionarArchivo"/>
-   <ListView fx:id="lista" prefWidth="100" prefHeight="100"/>
+   <Button text="Subir Imagen" onAction="#seleccionarArchivo"/>
+   <ListView fx:id="lista" prefWidth="100" prefHeight="200"/>
 </VBox>
