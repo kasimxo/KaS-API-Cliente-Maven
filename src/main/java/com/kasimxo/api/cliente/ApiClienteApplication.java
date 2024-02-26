@@ -1,12 +1,7 @@
 package com.kasimxo.api.cliente;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.DataInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
@@ -15,35 +10,34 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.kasimxo.api.cliente.utils.Input;
 import com.kasimxo.api.cliente.utils.ParameterStringBuilder;
+import com.kasimxo.api.cliente.views.MainWindow;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 @SpringBootApplication
 public class ApiClienteApplication {
 	
 	public static boolean funcionando;
 	public static Input i;
+	
+	public static MainWindow mw;
 
 	public static void main(String[] args) {
+		
+		
+		MainWindow.launch(MainWindow.class);
 		
 		funcionando = true;
 		i = new Input();
@@ -91,7 +85,7 @@ public class ApiClienteApplication {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			
-			HttpGet request = new HttpGet("http://localhost:8081/upload");
+			HttpGet request = new HttpGet("http://localhost:8081/imagenes");
 			
 			//CloseableHttpResponse response = httpClient.execute(request);
 			ResponseHandler<List<String>> responseHandler = new MyResponseHandler(); 

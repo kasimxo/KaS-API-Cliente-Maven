@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox alignment="CENTER" spacing="20.0" styleClass="container" stylesheets="@styles.css"
+      xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <Label styleClass="app-title" text="Fancy App Title"/>
+   <TextField maxWidth="200.0" promptText="Enter your name"/>
+   <Button text="OK"/>
+</VBox>
