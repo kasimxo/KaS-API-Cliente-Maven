@@ -2,9 +2,11 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox alignment="CENTER" spacing="20.0" styleClass="container" stylesheets="@styles.css"
-      xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-   <Label styleClass="app-title" text="Fancy App Title"/>
+<?import com.kasimxo.api.cliente.views.*?>
+<VBox alignment="CENTER" prefWidth="600" prefHeight="400" spacing="20.0" styleClass="container" stylesheets="@../css/mainwindow.css"
+      xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.kasimxo.api.cliente.views.controller.Cotroller">
+   <Label styleClass="app-title" text="Clouding"/>
    <TextField maxWidth="200.0" promptText="Enter your name"/>
-   <Button text="OK"/>
+   <Button text="Seleccionar Archivo" onAction="#seleccionarArchivo"/>
 </VBox>
