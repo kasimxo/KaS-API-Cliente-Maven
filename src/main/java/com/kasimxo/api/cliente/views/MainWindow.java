@@ -30,18 +30,14 @@ public class MainWindow extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		System.out.println("Ejecutando inicialización ventana");
+		
 		try {
 			File r = new File("./src/main/java/com/kasimxo/api/cliente/views/fxml/mainwindow.fxml");
 			Parent root = FXMLLoader.load(r.toURL());
             Scene scene = new Scene(root);
             
-           
-            /*
-        	ListView<String> lista = (ListView<String>) scene.lookup("#lista");
-        	ObservableList<String> items = FXCollections.observableArrayList();
-        	for (String i : ApiClienteApplication.imagenes) { items.add(i); };
-        	lista.setItems(items);
-             */
+
             
             ListView<HBox> listaImagenes = (ListView<HBox>) scene.lookup("#lista");
             ObservableList<HBox> items = FXCollections.observableArrayList();
@@ -58,25 +54,29 @@ public class MainWindow extends Application {
 		    	nombre.setTextFill(Color.web("#0076a3"));
 		    	nombre.setTextAlignment(TextAlignment.JUSTIFY); 
 		    	linea.getChildren().add(nombre);
-		    	items.add(linea);
+
 		    	
 		    	Button btn_descargar = new Button("Descargar");
 		    	btn_descargar.setFont(new Font("Arial", 12));
 		    	btn_descargar.setTextFill(Color.web("#0076a3"));
 		    	btn_descargar.setTextAlignment(TextAlignment.JUSTIFY); 
 		    	linea.getChildren().add(btn_descargar);
-		    	items.add(linea);
+
 		    	
 		    	Button btn_eliminar = new Button("Eliminar");
 		    	btn_eliminar.setFont(new Font("Arial", 12));
 		    	btn_eliminar.setTextFill(Color.web("#0076a3"));
 		    	btn_eliminar.setTextAlignment(TextAlignment.JUSTIFY); 
 		    	linea.getChildren().add(btn_eliminar);
-		    	items.add(linea);
+		    	
 		    	
 		    	linea.setSpacing(20);
+		    	items.add(linea);
 		    }
             listaImagenes.setItems(items);
+            
+            
+            System.out.println(items.size());
             
             primaryStage.setScene(scene);
             primaryStage.show();
