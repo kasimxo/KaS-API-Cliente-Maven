@@ -28,7 +28,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.NameValuePair;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.kasimxo.api.cliente.utils.Input;
 import com.kasimxo.api.cliente.utils.ListadoResponseHandler;
 import com.kasimxo.api.cliente.utils.Base64ResponseHandler;
 import com.kasimxo.api.cliente.utils.Configuracion;
@@ -195,7 +194,6 @@ public class ApiClienteApplication {
 		 	
 		 	DirectoryChooser chooser = new DirectoryChooser();
 		 	chooser.setTitle("Selecciona el directorio en el que guardar el archivo \"" + filename + "\"");
-
 
 		 	File selectedDirectory = chooser.showDialog(MainWindow.stage);
 		 	
