@@ -14,6 +14,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.springframework.http.HttpStatus;
 
+import com.kasimxo.api.cliente.views.MainWindow;
+
 /**
  * Interpreta respuestas del servidor que son puro String en base 64
  * y las devuelve
@@ -25,6 +27,7 @@ public class Base64ResponseHandler implements ResponseHandler {
 		String respuesta = "";
 		
 		int status = response.getStatusLine().getStatusCode();
+		if(MainWindow.scene != null) {MainWindow.actualizarEstado(Integer.toString(status));}
 		if (status < 200 || status >= 300) {
 			System.out.println("Problema con la respuesta");
 			return null;

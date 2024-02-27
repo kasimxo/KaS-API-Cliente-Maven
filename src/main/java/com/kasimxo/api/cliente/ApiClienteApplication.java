@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
@@ -21,6 +22,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.kasimxo.api.cliente.utils.Input;
 import com.kasimxo.api.cliente.utils.ListadoResponseHandler;
 import com.kasimxo.api.cliente.utils.Base64ResponseHandler;
+import com.kasimxo.api.cliente.utils.Configuracion;
 import com.kasimxo.api.cliente.utils.ErrorCodeHandler;
 import com.kasimxo.api.cliente.utils.ParameterStringBuilder;
 import com.kasimxo.api.cliente.views.MainWindow;
@@ -36,16 +38,16 @@ import javafx.stage.Stage;
 public class ApiClienteApplication {
 	
 	public static boolean funcionando;
-	public static Input i;
 	
-	public static MainWindow mw;
+	public static Configuracion config;
 	
 	public static List<String> imagenes; //Temporal, guarda los nombres de las imágenes recuperadas del servidor
 
 	public static void main(String[] args) {
 		
+		config = new Configuracion();
+		
 		imagenes = getAllImagenes();
-		System.out.println(imagenes.size());
 		
 		MainWindow.launch(MainWindow.class);
 		
@@ -56,7 +58,7 @@ public class ApiClienteApplication {
 	public static void deleteImagen(String filename) {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
-			HttpDelete request = new HttpDelete("http://localhost:8081/imagenes/" + filename);
+			HttpDelete request = new HttpDelete(Configuracion.direccionCompleta+"/imagenes/" + filename);
 			
 			ResponseHandler<String> responseHandler = new ErrorCodeHandler(); 
 			String e = httpClient.execute(request, responseHandler);
@@ -66,6 +68,8 @@ public class ApiClienteApplication {
 
 		 	
 			return;
+		} catch (UnknownHostException ue) {
+			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -76,14 +80,18 @@ public class ApiClienteApplication {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			
-			HttpGet request = new HttpGet("http://localhost:8081/imagenes");
+			HttpGet request = new HttpGet(Configuracion.direccionCompleta+"/imagenes");
 			
 			//CloseableHttpResponse response = httpClient.execute(request);
 			ResponseHandler<List<String>> responseHandler = new ListadoResponseHandler(); 
 			List<String> response = httpClient.execute(request, responseHandler);
 			
 			for(String s : response) {System.out.println(s);}
+			imagenes = response;
 			return response;
+		} catch (UnknownHostException ue) {
+			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
+			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -93,7 +101,7 @@ public class ApiClienteApplication {
 	public static void postImagen(File imagen) {
 		try {
 
-			URL url = new URL("http://localhost:8081/upload");
+			URL url = new URL(Configuracion.direccionCompleta+"/upload");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("POST");
 			con.setConnectTimeout(5000);
@@ -119,6 +127,8 @@ public class ApiClienteApplication {
 			out.flush();
 			out.close();
 			System.out.println("end");
+		} catch (UnknownHostException ue) {
+			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -128,7 +138,7 @@ public class ApiClienteApplication {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
 			
-			HttpGet request = new HttpGet("http://localhost:8081/imagenes/" + filename);
+			HttpGet request = new HttpGet(Configuracion.direccionCompleta+"/imagenes/" + filename);
 			
 			ResponseHandler<String> responseHandler = new Base64ResponseHandler(); 
 			
@@ -147,19 +157,18 @@ public class ApiClienteApplication {
 		 	File finalFile = new File(selectedDirectory.getAbsolutePath()+"/"+filename);
 			
 	 		finalFile.createNewFile();
-	 		System.out.println("Vamos a iniciar fos");
 	 		
 		 	FileOutputStream fos = new FileOutputStream(finalFile);
 		 	
-		 	System.out.println("Hemos iniciado fos");
 		 	fos.write(decodedBytes);
 		 	fos.flush();
 		 	fos.close();
 
 		 	System.out.println("Hemos guardado el archivo");
 
-		 	
 			return;
+		} catch (UnknownHostException ue) {
+			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

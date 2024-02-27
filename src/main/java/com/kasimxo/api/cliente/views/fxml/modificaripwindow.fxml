@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import com.kasimxo.api.cliente.views.*?>
+<VBox alignment="CENTER" prefWidth="350" prefHeight="200" spacing="20.0" styleClass="container" stylesheets="@../css/mainwindow.css"
+      xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="com.kasimxo.api.cliente.views.controller.ModificarIpController">
+	<HBox fx:id="ipconfig" spacing="25" prefWidth="300">
+
+		<Label styleClass="ipconfig" text="IP " />
+		<TextField fx:id="ipinput" />
+
+	</HBox>
+	<HBox fx:id="puertoconfig" spacing="25" prefWidth="300">
+
+		<Label styleClass="ipconfig" text="Puerto " />
+		<TextField fx:id="puertoinput" />
+
+	</HBox>
+	<HBox fx:id="puertoconfig" spacing="25" prefWidth="300">
+		<Button text="Cancelar" onAction="#cancelar"/>
+		<Region HBox.hgrow="ALWAYS" />
+		<Button text="Restaurar" onAction="#restaurarDireccion"/>
+		<Region HBox.hgrow="ALWAYS" />
+		<Button text="Guardar" onAction="#guardarDireccion"/>
+	</HBox>
+   
+</VBox>

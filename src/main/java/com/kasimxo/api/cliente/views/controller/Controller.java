@@ -3,16 +3,23 @@ package com.kasimxo.api.cliente.views.controller;
 import java.io.File;
 
 import com.kasimxo.api.cliente.ApiClienteApplication;
+import com.kasimxo.api.cliente.views.MainWindow;
+import com.kasimxo.api.cliente.views.ModificarIpWindow;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
 public class Controller {
+	
+	@FXML
+	public void actualizarImagenes(ActionEvent event) {
+		System.out.println("Actualizando lista imagenes");
+		MainWindow.rellenarListaImagenes();
+	}
 
 	@FXML
 	public void seleccionarArchivo(ActionEvent event) {
-		System.out.println("Vamos a seleccionar un archivo");
 		
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Selección de archivo");
@@ -27,5 +34,14 @@ public class Controller {
 		}
 	}
 
+	@FXML
+	public void modificarIp(ActionEvent event) {
+		try {
+			ModificarIpWindow.abrir();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 }
