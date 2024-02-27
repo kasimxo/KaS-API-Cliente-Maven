@@ -4,7 +4,10 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -69,8 +72,8 @@ public class ApiClienteApplication {
 	public static void renombrarImagen(String id, String filename) {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
-			
-			HttpPut request = new HttpPut(Configuracion.direccionCompleta+"/imagenes/" + id);
+			String url = Configuracion.direccionCompleta+"/imagenes/" + id;
+			HttpPut request = new HttpPut(url);
 			
 			List<NameValuePair> nameValuePairs = new ArrayList<>();
 			NameValuePair param = new BasicNameValuePair("name", filename);
@@ -82,11 +85,13 @@ public class ApiClienteApplication {
 			String e = httpClient.execute(request, responseHandler);
 			System.out.println(e);
 		
-		 	System.out.println("Hemos eliminado el archivo");
+		 	System.out.println("Archivo renombrado");
 
 		 	
 			return;
 		} catch (UnknownHostException ue) {
+			System.out.println("Excepcion");
+			ue.printStackTrace();
 			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,7 +101,8 @@ public class ApiClienteApplication {
 	public static void deleteImagen(String filename) {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
-			HttpDelete request = new HttpDelete(Configuracion.direccionCompleta+"/imagenes/" + filename);
+			String url = Configuracion.direccionCompleta+"/imagenes/" +  filename;
+			HttpDelete request = new HttpDelete(url);
 			
 			ResponseHandler<String> responseHandler = new ErrorCodeHandler(); 
 			String e = httpClient.execute(request, responseHandler);
@@ -120,7 +126,6 @@ public class ApiClienteApplication {
 			
 			HttpGet request = new HttpGet(Configuracion.direccionCompleta+"/imagenes");
 			
-			//CloseableHttpResponse response = httpClient.execute(request);
 			ResponseHandler<List<String>> responseHandler = new ListadoResponseHandler(); 
 			List<String> response = httpClient.execute(request, responseHandler);
 			
@@ -150,10 +155,12 @@ public class ApiClienteApplication {
 			
 			byte[] byteArray = Files.readAllBytes(Paths.get(imagen.getAbsolutePath()));
 			String encoded = Base64.getUrlEncoder().encodeToString(byteArray);
-			
+			System.out.println(imagen.getName());
+			String name = URLEncoder.encode(imagen.getName(), StandardCharsets.UTF_8);
+			System.out.println(name);
 			Map<String, String> parameters = new HashMap<>();
 			parameters.put("file", encoded);
-			parameters.put("fileName", imagen.getName());
+			parameters.put("fileName", name);
 			
 			con.setDoOutput(true);
 			DataOutputStream out = new DataOutputStream(con.getOutputStream());
@@ -175,8 +182,8 @@ public class ApiClienteApplication {
 	public static void getImagen(String filename) {
 		try {
 			CloseableHttpClient httpClient = HttpClients.createDefault();
-			
-			HttpGet request = new HttpGet(Configuracion.direccionCompleta+"/imagenes/" + filename);
+			//String url = Configuracion.direccionCompleta+"/imagenes/" +  URLEncoder.encode(filename, StandardCharsets.UTF_8);
+			HttpGet request = new HttpGet(Configuracion.direccionCompleta+"/imagenes/" +  filename);
 			
 			ResponseHandler<String> responseHandler = new Base64ResponseHandler(); 
 			

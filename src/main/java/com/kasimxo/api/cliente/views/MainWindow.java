@@ -100,7 +100,8 @@ public class MainWindow extends Application {
 	        HBox linea = new HBox();
 	        
 	        
-	    	Label nombre = new Label(i);
+	    	Label nombre = new Label();
+	    	nombre.setText(i);
 	        //label1.setGraphic(new ImageView(image));
 	    	nombre.setFont(new Font("Arial", 12));
 	    	nombre.setTextFill(Color.web("#0076a3"));

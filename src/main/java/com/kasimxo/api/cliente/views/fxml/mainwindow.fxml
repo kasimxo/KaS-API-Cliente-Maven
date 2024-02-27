@@ -5,7 +5,7 @@
 <?import javafx.scene.text.*?>
 <?import com.kasimxo.api.cliente.views.*?>
 <VBox alignment="CENTER" prefWidth="600" prefHeight="400" spacing="20.0" styleClass="container" stylesheets="@../css/mainwindow.css"
-      xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" 
+      xmlns="javafx.com/javafx" xmlns:fx="javafx.com/fxml/1" 
       fx:controller="com.kasimxo.api.cliente.views.controller.Controller">
 
 	<HBox fx:id="ipconfig" spacing="25" prefWidth="600">

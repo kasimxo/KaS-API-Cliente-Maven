@@ -30,6 +30,7 @@ public class Base64ResponseHandler implements ResponseHandler {
 		if(MainWindow.scene != null) {MainWindow.actualizarEstado(Integer.toString(status));}
 		if (status < 200 || status >= 300) {
 			System.out.println("Problema con la respuesta");
+			System.out.println(status);
 			return null;
 		}
 		

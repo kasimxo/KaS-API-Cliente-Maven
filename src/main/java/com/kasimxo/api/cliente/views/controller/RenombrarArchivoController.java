@@ -19,6 +19,7 @@ public class RenombrarArchivoController {
 		if(newName.length() < 1) {
 			//No cumple los requisitos, descartamos
 			RenombrarArchivoWindow.stage.close();
+			System.out.println("Nombre demasiado corto");
 			return;
 		}
 		
@@ -26,7 +27,6 @@ public class RenombrarArchivoController {
 		
 		ApiClienteApplication.renombrarImagen(oldName.getText(), newName);
 		RenombrarArchivoWindow.stage.close();
-		
 	}
 
 	@FXML
