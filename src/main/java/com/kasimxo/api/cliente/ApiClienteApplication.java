@@ -6,17 +6,23 @@ import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.NameValuePair;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.kasimxo.api.cliente.utils.Input;
@@ -53,6 +59,38 @@ public class ApiClienteApplication {
 		
 		funcionando = true;
 
+	}
+	
+	/**
+	 * Petición PUT para renombrar un archivo en el servidor
+	 * @param id -> Id de la imagen a renombrar
+	 * @param filename -> Nuevo nombre para la imagen
+	 */
+	public static void renombrarImagen(String id, String filename) {
+		try {
+			CloseableHttpClient httpClient = HttpClients.createDefault();
+			
+			HttpPut request = new HttpPut(Configuracion.direccionCompleta+"/imagenes/" + id);
+			
+			List<NameValuePair> nameValuePairs = new ArrayList<>();
+			NameValuePair param = new BasicNameValuePair("name", filename);
+			nameValuePairs.add(param);
+			
+			request.setEntity(new UrlEncodedFormEntity(nameValuePairs, StandardCharsets.UTF_8));
+
+			ResponseHandler<String> responseHandler = new ErrorCodeHandler(); 
+			String e = httpClient.execute(request, responseHandler);
+			System.out.println(e);
+		
+		 	System.out.println("Hemos eliminado el archivo");
+
+		 	
+			return;
+		} catch (UnknownHostException ue) {
+			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void deleteImagen(String filename) {

@@ -7,7 +7,7 @@
 <VBox alignment="CENTER" prefWidth="350" prefHeight="200" spacing="20.0" styleClass="container" stylesheets="@../css/mainwindow.css"
       xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="com.kasimxo.api.cliente.views.controller.ModificarIpController">
-	<HBox fx:id="ipconfig" spacing="25" prefWidth="300">
+      <HBox fx:id="ipconfig" spacing="25" prefWidth="300">
 
 		<Label styleClass="ipconfig" text="IP " />
 		<TextField fx:id="ipinput" />
@@ -26,5 +26,6 @@
 		<Region HBox.hgrow="ALWAYS" />
 		<Button text="Guardar" onAction="#guardarDireccion"/>
 	</HBox>
+
    
 </VBox>

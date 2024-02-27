@@ -138,6 +138,12 @@ public class MainWindow extends Application {
 					//botón de aceptar y cancelar
 					//y depues haga la operación put
 					//ApiClienteApplication.getImagen(nombre.getText());
+					try {
+						RenombrarArchivoWindow.abrir(nombre.getText());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 	    	});
 	    	linea.getChildren().add(btn_renombrar);
