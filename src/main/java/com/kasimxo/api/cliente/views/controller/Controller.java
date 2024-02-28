@@ -30,8 +30,10 @@ public class Controller {
 			return;
 		} else {
 			System.out.println("El usuario ha seleccionado el archivo: " + selected.getName());
-			ApiClienteApplication.postImagen(selected);
+			//ApiClienteApplication.postImagen(selected);
+			ApiClienteApplication.postMultiPartFile(selected);
 		}
+		MainWindow.rellenarListaImagenes();
 	}
 
 	@FXML

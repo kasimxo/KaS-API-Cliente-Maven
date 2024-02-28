@@ -1,6 +1,7 @@
 package com.kasimxo.api.cliente.views.controller;
 
 import com.kasimxo.api.cliente.ApiClienteApplication;
+import com.kasimxo.api.cliente.views.MainWindow;
 import com.kasimxo.api.cliente.views.ModificarIpWindow;
 import com.kasimxo.api.cliente.views.RenombrarArchivoWindow;
 
@@ -27,6 +28,7 @@ public class RenombrarArchivoController {
 		
 		ApiClienteApplication.renombrarImagen(oldName.getText(), newName);
 		RenombrarArchivoWindow.stage.close();
+		MainWindow.rellenarListaImagenes();
 	}
 
 	@FXML

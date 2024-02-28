@@ -1,4 +1,4 @@
-package com.kasimxo.api.cliente.utils;
+package com.kasimxo.api.cliente.handlers;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;

@@ -1,2 +1,2 @@
 puerto=8081
-ip=10.5.4.12
+ip=localhost

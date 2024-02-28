@@ -2,7 +2,6 @@ package com.kasimxo.api.cliente.views;
 
 import java.io.File;
 
-import com.kasimxo.api.cliente.ApiClienteApplication;
 import com.kasimxo.api.cliente.utils.Configuracion;
 
 import javafx.fxml.FXMLLoader;

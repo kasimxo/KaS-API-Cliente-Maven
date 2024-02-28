@@ -10,18 +10,12 @@ import java.util.TimerTask;
 import com.kasimxo.api.cliente.ApiClienteApplication;
 import com.kasimxo.api.cliente.utils.ActualizarListadoTimerTask;
 import com.kasimxo.api.cliente.utils.Configuracion;
-import com.kasimxo.api.cliente.views.controller.Controller;
-
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
@@ -163,6 +157,7 @@ public class MainWindow extends Application {
 				@Override
 				public void handle(ActionEvent event) {
 					ApiClienteApplication.deleteImagen(nombre.getText());
+					MainWindow.rellenarListaImagenes();
 				}
 	    	});
 	    	linea.getChildren().add(btn_eliminar);
