@@ -17,13 +17,20 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.config.ConnectionConfig;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.NameValuePair;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -70,7 +77,7 @@ public class ApiClienteApplication {
 	 */
 	public static void renombrarImagen(String id, String filename) {
 		try {
-			CloseableHttpClient httpClient = HttpClients.createDefault();
+			CloseableHttpClient httpClient = crearServicio();
 			String url = Configuracion.direccionCompleta+"/imagenes/" + id;
 			HttpPut request = new HttpPut(url);
 			
@@ -92,6 +99,9 @@ public class ApiClienteApplication {
 			System.out.println("Excepcion");
 			ue.printStackTrace();
 			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
+		} catch (ConnectTimeoutException cte){
+			System.out.println("Se ha excedido el tiempo máximo para establecer conexión");
+			MainWindow.actualizarEstado("Excedido tiempo máximo para establecer conexión");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -99,7 +109,7 @@ public class ApiClienteApplication {
 
 	public static void deleteImagen(String filename) {
 		try {
-			CloseableHttpClient httpClient = HttpClients.createDefault();
+			CloseableHttpClient httpClient = crearServicio();
 			String url = Configuracion.direccionCompleta+"/imagenes/" +  filename;
 			HttpDelete request = new HttpDelete(url);
 			
@@ -113,6 +123,9 @@ public class ApiClienteApplication {
 			return;
 		} catch (UnknownHostException ue) {
 			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
+		} catch (ConnectTimeoutException cte){
+			System.out.println("Se ha excedido el tiempo máximo para establecer conexión");
+			MainWindow.actualizarEstado("Excedido tiempo máximo para establecer conexión");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -121,9 +134,12 @@ public class ApiClienteApplication {
 	
 	public static List<String> getAllImagenes() {
 		try {
-			CloseableHttpClient httpClient = HttpClients.createDefault();
+			
+			
+			CloseableHttpClient httpClient = crearServicio();
 			
 			HttpGet request = new HttpGet(Configuracion.direccionCompleta+"/imagenes");
+			
 			
 			ResponseHandler<List<String>> responseHandler = new ListadoResponseHandler(); 
 			List<String> response = httpClient.execute(request, responseHandler);
@@ -133,6 +149,10 @@ public class ApiClienteApplication {
 			return response;
 		} catch (UnknownHostException ue) {
 			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
+			return null;
+		} catch (ConnectTimeoutException cte){
+			System.out.println("Se ha excedido el tiempo máximo para establecer conexión");
+			MainWindow.actualizarEstado("Excedido tiempo máximo para establecer conexión");
 			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,9 +174,7 @@ public class ApiClienteApplication {
 			
 			byte[] byteArray = Files.readAllBytes(Paths.get(imagen.getAbsolutePath()));
 			String encoded = Base64.getUrlEncoder().encodeToString(byteArray);
-			System.out.println(imagen.getName());
 			String name = URLEncoder.encode(imagen.getName(), StandardCharsets.UTF_8);
-			System.out.println(name);
 			Map<String, String> parameters = new HashMap<>();
 			parameters.put("file", encoded);
 			parameters.put("fileName", name);
@@ -173,6 +191,9 @@ public class ApiClienteApplication {
 			System.out.println("end");
 		} catch (UnknownHostException ue) {
 			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
+		} catch (ConnectTimeoutException cte){
+			System.out.println("Se ha excedido el tiempo máximo para establecer conexión");
+			MainWindow.actualizarEstado("Excedido tiempo máximo para establecer conexión");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -212,9 +233,37 @@ public class ApiClienteApplication {
 			return;
 		} catch (UnknownHostException ue) {
 			MainWindow.actualizarEstado("Host desconocido (failure in name resolution)");
+		} catch (ConnectTimeoutException cte){
+			System.out.println("Se ha excedido el tiempo máximo para establecer conexión");
+			MainWindow.actualizarEstado("Excedido tiempo máximo para establecer conexión");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	/**
+	 * Establece un cliente http que se desconectará después de un tiempo (2 segundos)
+	 * @return
+	 */
+	public static CloseableHttpClient crearServicio() {
+		int timeout = 2;
+		RequestConfig config = RequestConfig.custom()
+		  .setConnectTimeout(timeout * 1000)
+		  .setConnectionRequestTimeout(timeout * 1000)
+		  .setSocketTimeout(timeout * 1000).build();
+		
+		ConnectionConfig connConfig = ConnectionConfig.DEFAULT;
+		
+		BasicHttpClientConnectionManager cm = new BasicHttpClientConnectionManager();
+		cm.setConnectionConfig(connConfig);
+		
+		CloseableHttpClient httpClient =  HttpClientBuilder.create()
+		    .setDefaultRequestConfig(config)
+		    .setConnectionManager(cm)
+		    .setConnectionTimeToLive(timeout, TimeUnit.MILLISECONDS)
+		    .build();
+		return httpClient;
 	}
 
 }

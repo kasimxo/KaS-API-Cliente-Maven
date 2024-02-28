@@ -94,8 +94,13 @@ public class MainWindow extends Application {
         
         //Actualizamos la lista con una peticion post
         ApiClienteApplication.getAllImagenes();
+        List<String> files = ApiClienteApplication.imagenes;
+        if(files == null) {
+        	//Prevenimos excepción por recorrer array null
+        	return;
+        }
         
-        for(String i : ApiClienteApplication.imagenes) {
+        for(String i : files) {
         	
 	        HBox linea = new HBox();
 	        

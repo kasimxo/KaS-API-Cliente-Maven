@@ -20,7 +20,7 @@
 	<HBox spacing="20" prefWidth="600">
 		<Button text="Actualizar" onAction="#actualizarImagenes"/>
 		<Region HBox.hgrow="ALWAYS" />
-		<Button text="Subir Imagen" onAction="#seleccionarArchivo"/>
+		<Button text="Subir Archivo" onAction="#seleccionarArchivo"/>
 	</HBox>
 	
 </VBox>
